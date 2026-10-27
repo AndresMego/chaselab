@@ -1,0 +1,62 @@
+[
+  {
+    "binary": "ChaseLabPlayer4",
+    "name": "CL Player",
+    "id": "CLP4",
+    "component": "player",
+    "source": "ChaseLabPlayer4.mm",
+    "sourceMode": 0,
+    "version": "0.4.1",
+    "bundleID": "local.chaselab.player4"
+  },
+  {
+    "binary": "ChaseLabBumper",
+    "name": "CL Bumper",
+    "id": "CLB1",
+    "component": "bumper",
+    "source": "ChaseLabBumper.mm",
+    "sourceMode": 0,
+    "version": "0.1.3",
+    "bundleID": "local.chaselab.bumper"
+  },
+  {
+    "binary": "ChaseLabOutliner",
+    "name": "CL Outliner",
+    "id": "COL1",
+    "component": "outliner",
+    "source": "ChaseLabOutliner.mm",
+    "sourceMode": 0,
+    "version": "0.1.2",
+    "bundleID": "local.chaselab.ChaseLabOutliner"
+  },
+  {
+    "binary": "ChaseLabOutlinerSource",
+    "name": "CL Outline Src",
+    "id": "COS1",
+    "component": "outliner",
+    "source": "ChaseLabOutliner.mm",
+    "sourceMode": 1,
+    "version": "0.1.2",
+    "bundleID": "local.chaselab.ChaseLabOutlinerSource"
+  },
+  {
+    "binary": "ChaseLabWiper",
+    "name": "CL Wiper",
+    "id": "CWI1",
+    "component": "wiper",
+    "source": "ChaseLabWiper.mm",
+    "sourceMode": 0,
+    "version": "0.1.1",
+    "bundleID": "local.chaselab.ChaseLabWiper"
+  },
+  {
+    "binary": "ChaseLabRandom",
+    "name": "CL Random",
+    "id": "CRA1",
+    "component": "random",
+    "source": "ChaseLabRandom.mm",
+    "sourceMode": 0,
+    "version": "0.1.1",
+    "bundleID": "local.chaselab.ChaseLabRandom"
+  }
+]

@@ -1,0 +1,136 @@
+{
+  "version": 5,
+  "width": 960,
+  "height": 540,
+  "bpm": 120,
+  "division": 2,
+  "envelope": "Corte",
+  "slices": [
+    {
+      "id": "dc436290-8260-491a-9886-69444262eeae",
+      "name": "Slice 1",
+      "points": [
+        {
+          "x": 20,
+          "y": 20
+        },
+        {
+          "x": 460,
+          "y": 20
+        },
+        {
+          "x": 460,
+          "y": 250
+        },
+        {
+          "x": 20,
+          "y": 250
+        }
+      ]
+    },
+    {
+      "id": "f97df24d-6f3d-4e2f-a7c1-c56f41c8666c",
+      "name": "Slice 2",
+      "points": [
+        {
+          "x": 500,
+          "y": 20
+        },
+        {
+          "x": 940,
+          "y": 20
+        },
+        {
+          "x": 940,
+          "y": 250
+        },
+        {
+          "x": 500,
+          "y": 250
+        }
+      ]
+    },
+    {
+      "id": "da1c9bb9-65e4-4048-8d2d-4b1a1e537697",
+      "name": "Slice 3",
+      "points": [
+        {
+          "x": 20,
+          "y": 290
+        },
+        {
+          "x": 460,
+          "y": 290
+        },
+        {
+          "x": 460,
+          "y": 520
+        },
+        {
+          "x": 20,
+          "y": 520
+        }
+      ]
+    },
+    {
+      "id": "a6b5a18d-2efd-4d31-9f8a-cd26b7f08595",
+      "name": "Slice 4",
+      "points": [
+        {
+          "x": 500,
+          "y": 290
+        },
+        {
+          "x": 940,
+          "y": 290
+        },
+        {
+          "x": 940,
+          "y": 520
+        },
+        {
+          "x": 500,
+          "y": 520
+        }
+      ]
+    }
+  ],
+  "sequences": [
+    {
+      "id": "dca5fd86-3219-4aea-a77c-7d27ee31987c",
+      "name": "Demo",
+      "cells": [
+        [
+          true,
+          false,
+          false,
+          false
+        ],
+        [
+          false,
+          true,
+          false,
+          false
+        ],
+        [
+          false,
+          false,
+          true,
+          false
+        ],
+        [
+          false,
+          false,
+          false,
+          true
+        ]
+      ],
+      "durations": [
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  ]
+}

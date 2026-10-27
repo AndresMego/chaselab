@@ -1,0 +1,13 @@
+build/
+dist/
+.DS_Store
+*.pkg
+*.dmg
+*.zip
+*.avc
+*.mov
+*.mp4
+*.log
+.env
+*.p12
+*.mobileprovision
