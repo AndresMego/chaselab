@@ -8,3 +8,7 @@ add_library(CLPlayerWinDemo_MM SHARED Player.cpp ../../third_party/ffgl/lib/FFGL
 target_include_directories(CLPlayerWinDemo_MM PRIVATE ../../third_party/ffgl/lib)
 target_compile_definitions(CLPlayerWinDemo_MM PRIVATE GLEW_STATIC NOMINMAX WIN32_LEAN_AND_MEAN)
 target_link_libraries(CLPlayerWinDemo_MM PRIVATE GLEW::GLEW nlohmann_json::nlohmann_json opengl32)
+add_executable(PlayerProbe Probe.cpp)
+target_include_directories(PlayerProbe PRIVATE ../../third_party/ffgl/lib)
+target_compile_definitions(PlayerProbe PRIVATE GLEW_STATIC NOMINMAX WIN32_LEAN_AND_MEAN)
+target_link_libraries(PlayerProbe PRIVATE GLEW::GLEW)

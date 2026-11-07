@@ -19,6 +19,11 @@ jobs:
         run: dotnet run --project apps/windows/ChaseLab.Core.Checks -- examples/demo.chaselab
       - name: Build desktop editor
         run: dotnet publish apps/windows/ChaseLab.Windows -c Release -r win-x64 --self-contained true -o build/windows/app -p:DebugType=None
+      - name: Smoke test Windows UI
+        shell: pwsh
+        run: |
+          $process = Start-Process build/windows/app/ChaseLab_MM.exe -ArgumentList "--ui-smoke" -Wait -PassThru
+          if ($process.ExitCode -ne 0) { exit $process.ExitCode }
       - name: Install C++ dependencies
         shell: pwsh
         run: |
@@ -34,6 +39,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           cmake --build build/windows/player --config Release
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & build/windows/player/Release/PlayerProbe.exe "$pwd/build/windows/player/Release/CLPlayerWinDemo_MM.dll"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           New-Item -ItemType Directory -Force build/windows/app/Plugins
           Copy-Item build/windows/player/Release/CLPlayerWinDemo_MM.dll build/windows/app/Plugins/
           Copy-Item build/vcpkg/installed/x64-windows-static/share/glew/copyright build/windows/app/GLEW-LICENSE.txt
@@ -46,6 +53,19 @@ jobs:
           & $iscc packaging/windows/ChaseLab.iss
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           Get-ChildItem dist/windows/*.exe | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash.ToLower())  $([IO.Path]::GetFileName($_.Path))" } | Set-Content dist/windows/SHA256SUMS.txt
+      - name: Verify install, launch and uninstall
+        shell: pwsh
+        run: |
+          $setup = (Get-ChildItem dist/windows/*Setup.exe).FullName
+          $target = Join-Path $env:RUNNER_TEMP "ChaseLab-install-test"
+          $p = Start-Process $setup -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/DIR=$target" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "Installer failed: $($p.ExitCode)" }
+          if (!(Test-Path "$target/Plugins/CLPlayerWinDemo_MM.dll")) { throw "Missing installed DLL" }
+          $p = Start-Process "$target/ChaseLab_MM.exe" -ArgumentList "--ui-smoke" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "Installed application failed" }
+          $p = Start-Process "$target/unins000.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "Uninstall failed" }
+          if (Test-Path "$target/ChaseLab_MM.exe") { throw "Application was not removed" }
       - uses: actions/upload-artifact@v4
         with:
           name: ChaseLab_MM-Windows-x64-demo
