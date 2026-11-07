@@ -66,6 +66,9 @@ jobs:
           $p = Start-Process "$target/unins000.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -Wait -PassThru
           if ($p.ExitCode -ne 0) { throw "Uninstall failed" }
           if (Test-Path "$target/ChaseLab_MM.exe") { throw "Application was not removed" }
+      - name: Save UI preview
+        shell: pwsh
+        run: Copy-Item "$env:TEMP/chaselab-ui-smoke.png" dist/windows/UI-preview.png
       - uses: actions/upload-artifact@v4
         with:
           name: ChaseLab_MM-Windows-x64-demo

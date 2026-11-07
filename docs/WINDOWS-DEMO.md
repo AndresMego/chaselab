@@ -18,7 +18,7 @@ Primera adaptación experimental para Windows x64. Compilar correctamente no cer
 ## Alcance real de esta demo
 
 - Abrir/guardar proyectos Mac formatos 1–5 conservando campos opcionales desconocidos; validación de tamaños, coordenadas y duraciones. Formatos futuros se rechazan.
-- Secuencias, pintura en matriz y polígonos, pasos +/−, copiar/pegar pasos, duración, Deshacer, zoom con rueda y desplazamiento con botón central.
+- Secuencias, pintura en matriz por páginas de 16 columnas y polígonos, pasos +/−, copiar/pegar pasos, duración, Deshacer limitado a 16 acciones/32 MB, zoom con rueda y desplazamiento con botón central.
 - Reproducción de Corte/Fade out/Pulso y curvas Bézier incluidas en proyectos. La demo aún no dibuja curvas ni gestiona la biblioteca de envolventes.
 - Player experimental con control desde el editor y modo de máscara. Su parámetro Level multiplica la intensidad. No es todavía el Player Mac completo: faltan Control → Arena, Fill/Stretch, Echoes y selectores por instancia.
 - **Seguir XML guardado** sigue únicamente el archivo importado mientras la app está abierta. Conserva los pasos si el número, los nombres y el orden de slices coinciden. Cambios de cantidad/orden/nombre requieren importar de nuevo. No detecta automáticamente el preset activo de Arena.
