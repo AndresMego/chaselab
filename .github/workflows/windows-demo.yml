@@ -4,6 +4,9 @@ on:
     branches: [windows-demo]
     paths: ['apps/windows/**', 'plugins/windows/**', 'packaging/windows/**', 'examples/**', 'third_party/**', '.github/workflows/windows-demo.yml', 'docs/WINDOWS-DEMO.md']
   workflow_dispatch:
+concurrency:
+  group: windows-demo-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -63,9 +66,18 @@ jobs:
           if (!(Test-Path "$target/Plugins/CLPlayerWinDemo_MM.dll")) { throw "Missing installed DLL" }
           $p = Start-Process "$target/ChaseLab_MM.exe" -ArgumentList "--ui-smoke" -Wait -PassThru
           if ($p.ExitCode -ne 0) { throw "Installed application failed" }
+          $effects = Join-Path $env:RUNNER_TEMP "ChaseLab-effects-test"
+          New-Item -ItemType Directory -Force $effects
+          Copy-Item "$target/Plugins/CLPlayerWinDemo_MM.dll" "$effects/CLPlayerWinDemo_MM.dll"
+          $storage = Join-Path $env:LOCALAPPDATA "ChaseLab_MM"
+          New-Item -ItemType Directory -Force $storage
+          [IO.File]::WriteAllText("$storage/installed-plugin.txt", "$effects/CLPlayerWinDemo_MM.dll")
+          [IO.File]::WriteAllText("$storage/user-project-sentinel.chaselab", "preserve")
           $p = Start-Process "$target/unins000.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -Wait -PassThru
           if ($p.ExitCode -ne 0) { throw "Uninstall failed" }
           if (Test-Path "$target/ChaseLab_MM.exe") { throw "Application was not removed" }
+          if (Test-Path "$effects/CLPlayerWinDemo_MM.dll") { throw "Matching installed effect was not removed" }
+          if (!(Test-Path "$storage/user-project-sentinel.chaselab")) { throw "User data was removed" }
       - name: Save UI preview
         shell: pwsh
         run: Copy-Item "$env:TEMP/chaselab-ui-smoke.png" dist/windows/UI-preview.png

@@ -26,3 +26,24 @@ Name: "{group}\Desinstalar ChaseLab_MM Windows Demo"; Filename: "{uninstallexe}"
 [Run]
 Filename: "{app}\ChaseLab_MM.exe"; Description: "Abrir ChaseLab_MM Windows Demo"; Flags: nowait postinstall skipifsilent
 ; User projects/recovery and the manually installed Arena DLL are deliberately not deleted.
+
+[Code]
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  Receipt, Target, Payload: String;
+  Raw: AnsiString;
+begin
+  if CurUninstallStep <> usUninstall then Exit;
+  Receipt := ExpandConstant('{localappdata}\ChaseLab_MM\installed-plugin.txt');
+  Payload := ExpandConstant('{app}\Plugins\CLPlayerWinDemo_MM.dll');
+  if not LoadStringFromFile(Receipt, Raw) then Exit;
+  Target := Trim(UTF8Decode(Raw));
+  if CompareText(ExtractFileName(Target), 'CLPlayerWinDemo_MM.dll') <> 0 then Exit;
+  if not FileExists(Target) or not FileExists(Payload) then Exit;
+  { Only remove the exact DLL shipped by this installation, never another version. }
+  if CompareText(GetSHA256OfFile(Target), GetSHA256OfFile(Payload)) <> 0 then Exit;
+  if DeleteFile(Target) then
+    DeleteFile(Receipt)
+  else
+    if not UninstallSilent then MsgBox('Cierra Arena y retira CLPlayerWinDemo_MM.dll de Extra Effects. Windows mantiene el archivo abierto.', mbInformation, MB_OK);
+end;

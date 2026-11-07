@@ -31,7 +31,7 @@ La precisión temporal del reloj de escritorio y el consumo GPU requieren medici
 
 El instalador reemplaza la aplicación de esta demo en su carpeta habitual. Para actualizar Player, cierra Arena y usa de nuevo **Instalar Player…**. El instalador no cambia complementos de terceros.
 
-Desinstala desde Configuración → Aplicaciones o el acceso **Desinstalar ChaseLab_MM Windows Demo**. Se conservan proyectos y recuperación. Para retirar también el efecto, cierra Arena y elimina `CLPlayerWinDemo_MM.dll` de la carpeta Extra Effects donde lo instalaste; las copias anteriores están en `%LOCALAPPDATA%\ChaseLab_MM\plugin-backups`.
+Desinstala desde Configuración → Aplicaciones o el acceso **Desinstalar ChaseLab_MM Windows Demo**. Se conservan proyectos y recuperación. El desinstalador retira también la DLL registrada si coincide exactamente con la versión incluida y Arena no la tiene abierta. Si se actualizó después o Windows la mantiene abierta, cierra Arena y elimina `CLPlayerWinDemo_MM.dll` de la carpeta Extra Effects donde lo instalaste; las copias anteriores están en `%LOCALAPPDATA%\ChaseLab_MM\plugin-backups`.
 
 ## Compilar
 
