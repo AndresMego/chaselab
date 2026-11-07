@@ -1,0 +1,53 @@
+name: Windows demo
+on:
+  push:
+    branches: [windows-demo]
+    paths: ['apps/windows/**', 'plugins/windows/**', 'packaging/windows/**', 'examples/**', 'third_party/**', '.github/workflows/windows-demo.yml', 'docs/WINDOWS-DEMO.md']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Verify project compatibility and timing
+        run: dotnet run --project apps/windows/ChaseLab.Core.Checks -- examples/demo.chaselab
+      - name: Build desktop editor
+        run: dotnet publish apps/windows/ChaseLab.Windows -c Release -r win-x64 --self-contained true -o build/windows/app -p:DebugType=None
+      - name: Install C++ dependencies
+        shell: pwsh
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git build/vcpkg
+          git -C build/vcpkg checkout 6fdd23fa0a9479a9f9a1c48178696f60cf39255d
+          & build/vcpkg/bootstrap-vcpkg.bat -disableMetrics
+          & build/vcpkg/vcpkg.exe install glew:x64-windows-static nlohmann-json:x64-windows-static
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Build Player DLL
+        shell: pwsh
+        run: |
+          cmake -S plugins/windows -B build/windows/player -A x64 -DCMAKE_TOOLCHAIN_FILE="$pwd/build/vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-windows-static
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake --build build/windows/player --config Release
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          New-Item -ItemType Directory -Force build/windows/app/Plugins
+          Copy-Item build/windows/player/Release/CLPlayerWinDemo_MM.dll build/windows/app/Plugins/
+          Copy-Item build/vcpkg/installed/x64-windows-static/share/glew/copyright build/windows/app/GLEW-LICENSE.txt
+          Copy-Item build/vcpkg/installed/x64-windows-static/share/nlohmann-json/copyright build/windows/app/JSON-LICENSE.txt
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}/Inno Setup 6/ISCC.exe"
+          if (!(Test-Path $iscc)) { choco install innosetup --no-progress -y }
+          & $iscc packaging/windows/ChaseLab.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-ChildItem dist/windows/*.exe | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash.ToLower())  $([IO.Path]::GetFileName($_.Path))" } | Set-Content dist/windows/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ChaseLab_MM-Windows-x64-demo
+          path: dist/windows/*
+          if-no-files-found: error
