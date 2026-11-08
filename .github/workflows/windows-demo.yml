@@ -55,7 +55,8 @@ jobs:
           if (!(Test-Path $iscc)) { choco install innosetup --no-progress -y }
           & $iscc packaging/windows/ChaseLab.iss
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          Get-ChildItem dist/windows/*.exe | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash.ToLower())  $([IO.Path]::GetFileName($_.Path))" } | Set-Content dist/windows/SHA256SUMS.txt
+          $hashes = Get-ChildItem dist/windows/*.exe | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash.ToLower())  $([IO.Path]::GetFileName($_.Path))" }
+          [IO.File]::WriteAllText("$pwd/dist/windows/SHA256SUMS.txt", ($hashes -join "`n") + "`n")
       - name: Verify install, launch and uninstall
         shell: pwsh
         run: |
