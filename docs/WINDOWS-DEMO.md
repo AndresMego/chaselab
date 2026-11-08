@@ -35,6 +35,6 @@ Desinstala desde Configuración → Aplicaciones o el acceso **Desinstalar Chase
 
 ## Compilar
 
-El workflow `.github/workflows/windows-demo.yml` compila en `windows-2022`, ejecuta comprobaciones de compatibilidad/temporización, publica una aplicación .NET 8 autónoma, compila FFGL con Visual C++ y genera el instalador con Inno Setup. El resultado se descarga desde Actions → Windows demo → Artifacts.
+El workflow `.github/workflows/windows-demo.yml` compila en `windows-2022`, ejecuta comprobaciones de compatibilidad/temporización, publica una aplicación .NET 10 autónoma, compila FFGL con Visual C++ y genera el instalador con Inno Setup. El resultado se descarga desde Actions → Windows demo → Artifacts.
 
 Dependencias C++: SDK FFGL incluido, GLEW y nlohmann/json mediante vcpkg fijado a un commit. Incluye sus avisos de licencia. Código propio Apache-2.0; SDK FFGL BSD-3-Clause. No se incluye código de Chaser original.
