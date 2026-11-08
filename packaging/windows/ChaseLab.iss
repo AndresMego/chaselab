@@ -19,6 +19,8 @@ UninstallDisplayIcon={app}\ChaseLab_MM.exe
 Source: "..\..\build\windows\app\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\..\docs\WINDOWS-DEMO.md"; DestDir: "{app}"
 Source: "..\..\LICENSE"; DestDir: "{app}"
+Source: "..\..\NOTICE"; DestDir: "{app}"
+Source: "..\..\THIRD_PARTY_NOTICES.md"; DestDir: "{app}"
 Source: "..\..\third_party\ffgl\LICENSE.md"; DestDir: "{app}"; DestName: "FFGL-LICENSE.md"
 [Icons]
 Name: "{group}\ChaseLab_MM Windows Demo"; Filename: "{app}\ChaseLab_MM.exe"
